@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cloudflare IP Checker</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://unpkg.com/ping.js/dist/ping.min.js"></script>
+  </head>
+  <body>
+    <h1>Cloudflare IP Checker</h1>
+    <p>Click the button to check which Cloudflare IPs are alive:</p>
+    <button onclick="checkIps()">Check IPs</button>
+    <ul id="ipList"></ul>
+    <script>
+      function checkIps() {
+        $.getJSON('https://www.cloudflare.com/ips-v4', function (ipList) {
+          $('#ipList').empty();
+          ipList.forEach(function (ip) {
+            ping.probe(ip, function (result) {
+              if (result.alive) {
+                $('#ipList').append('<li>' + ip + '</li>');
+              }
+            });
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
